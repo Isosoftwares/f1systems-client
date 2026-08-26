@@ -53,6 +53,7 @@ function App() {
         pauseOnHover
         theme="colored"
       />
+      
       <QueryClientProvider client={queryClient}>
         <Routes>
           <Route element={<PersistLogin />}>
