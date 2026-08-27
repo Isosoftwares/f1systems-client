@@ -12,7 +12,6 @@ dist
 dist.zip
 dist-ssr
 *.local
-api
 printing
 
 # Editor directories and files
