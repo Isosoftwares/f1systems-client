@@ -15,6 +15,7 @@ import {
   FaUserShield,
 } from "react-icons/fa";
 import { useTheme } from "../context/ThemeContext";
+import MasonicEmblem from "../components/MasonicEmblem";
 
 const SidebarLink = ({ item, isActive, onClick, isCollapsed }) => (
   <Link
@@ -22,8 +23,8 @@ const SidebarLink = ({ item, isActive, onClick, isCollapsed }) => (
     onClick={onClick}
     className={`group flex items-center gap-3 px-4 py-3 my-1 mx-2 rounded-xl transition-all duration-300 ${
       isActive
-        ? "bg-primary text-white shadow-lg shadow-primary/30 translate-x-1"
-        : "text-gray-800 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-primary"
+        ? "bg-primary text-[#1c221a] font-bold shadow-lg shadow-primary/30 translate-x-1"
+        : "text-gray-800 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-primary"
     }`}
   >
     <div
@@ -41,7 +42,7 @@ const SidebarLink = ({ item, isActive, onClick, isCollapsed }) => (
       {item.name}
     </span>
     {isActive && !isCollapsed && (
-      <div className="ml-auto w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+      <div className="ml-auto w-1.5 h-1.5 bg-[#1c221a] rounded-full animate-pulse" />
     )}
   </Link>
 );
@@ -116,19 +117,19 @@ function AdminDashboard() {
   const MenuContent = () => (
     <div className="flex flex-col h-full">
       {/* Branding */}
-      <div className="h-20 flex items-center gap-3 px-6 border-b-2 border-b-primary">
-        <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-white font-bold shadow-md shadow-primary/20 shrink-0">
-          G
+      <div className="h-20 flex items-center gap-3 px-5 border-b-2 border-b-primary bg-[#1f251d] text-white">
+        <div className="w-10 h-10 rounded-xl bg-[#2A2A28] flex items-center justify-center text-[#B9975B] font-bold shadow-md shrink-0 border border-[#B9975B]/40">
+          <MasonicEmblem className="w-6 h-6" color="#B9975B" />
         </div>
         <div
           className={`transition-all duration-300 overflow-hidden ${
             isSidebarCollapsed ? "w-0 opacity-0" : "w-auto opacity-100"
           }`}
         >
-          <h1 className="text-lg font-bold text-primary">
-            Ledger Portal
+          <h1 className="text-sm font-extrabold text-[#F4F0E8] font-serif uppercase tracking-wider leading-tight">
+            FREEMASON LEDGER
           </h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400 font-medium tracking-wider uppercase">
+          <p className="text-[10px] text-[#B9975B] font-semibold tracking-widest uppercase">
             Brotherhood Admin
           </p>
         </div>

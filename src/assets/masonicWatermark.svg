@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" fill="none" stroke="#B9975B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.12">
+  <!-- Outer Sacred Geometry Circles & Compass Rays -->
+  <circle cx="250" cy="250" r="230" stroke-width="1.5" stroke-dasharray="4 6" />
+  <circle cx="250" cy="250" r="200" stroke-width="2" />
+  <circle cx="250" cy="250" r="140" stroke-width="1" stroke-dasharray="8 4" />
+  <line x1="250" y1="10" x2="250" y2="490" stroke-width="1" opacity="0.4" />
+  <line x1="10" y1="250" x2="490" y2="250" stroke-width="1" opacity="0.4" />
+  <line x1="80" y1="80" x2="420" y2="420" stroke-width="0.8" opacity="0.3" />
+  <line x1="420" y1="80" x2="80" y2="420" stroke-width="0.8" opacity="0.3" />
+
+  <!-- The Square (90-degree angle base) -->
+  <path d="M 80 180 L 250 350 L 420 180 L 380 140 L 250 270 L 120 140 Z" fill="none" stroke-width="5" />
+  <line x1="140" y1="160" x2="160" y2="180" stroke-width="2" />
+  <line x1="180" y1="200" x2="200" y2="220" stroke-width="2" />
+  <line x1="220" y1="240" x2="240" y2="260" stroke-width="2" />
+  <line x1="360" y1="160" x2="340" y2="180" stroke-width="2" />
+  <line x1="320" y1="200" x2="300" y2="220" stroke-width="2" />
+  <line x1="280" y1="240" x2="260" y2="260" stroke-width="2" />
+
+  <!-- The Compasses (pointed upwards at 60 degrees) -->
+  <circle cx="250" cy="70" r="20" stroke-width="4" />
+  <circle cx="250" cy="70" r="8" fill="#B9975B" />
+  <path d="M 235 85 L 110 430 L 135 435 L 245 105 Z" fill="none" stroke-width="4" />
+  <path d="M 265 85 L 390 430 L 365 435 L 255 105 Z" fill="none" stroke-width="4" />
+
+  <!-- Central Letter G -->
+  <text x="250" y="275" font-family="'Cinzel', 'Times New Roman', serif" font-size="90" font-weight="bold" fill="#B9975B" stroke="none" text-anchor="middle">G</text>
+</svg>

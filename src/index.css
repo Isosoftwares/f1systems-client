@@ -3,25 +3,25 @@
 @tailwind utilities;
 
 :root {
-  /* Light Mode - Business Professional */
-  --color-primary: 230 57 70; /* #E63946 Red */
-  --color-secondary: 255 215 0; /* #FFD700 Gold */
-  --bg-body: 248 249 250;
+  /* Light Mode - Freemason Official Palette */
+  --color-primary: 185 151 91; /* #B9975B Gold */
+  --color-secondary: 59 74 53; /* #3B4A35 Olive Green */
+  --bg-body: 244 240 232; /* #F4F0E8 Warm Light */
   --bg-card: 255 255 255;
-  --text-main: 14 17 29; /* #0e111d Deep Navy (Dark) for text */
-  --text-muted: 100 116 139;
-  --border-color: 226 232 240; /* Slate 200 */
+  --text-main: 42 42 40; /* #2A2A28 Deep Charcoal/Brown */
+  --text-muted: 110 115 105;
+  --border-color: 218 214 204;
 }
 
 .dark {
-  /* Dark Mode - Deep Navy */
-  --color-primary: 230 57 70; /* #E63946 */
-  --color-secondary: 255 215 0; /* #FFD700 */
-  --bg-body: 14 17 29; /* #0e111d */
-  --bg-card: 27 32 52; /* #1b2034 */
-  --text-main: 255 255 255;
-  --text-muted: 148 163 184; /* #94a3b8 */
-  --border-color: 51 65 85; /* Slate 700 */
+  /* Dark Mode - Deep Masonic Palette */
+  --color-primary: 185 151 91; /* #B9975B Gold Accent */
+  --color-secondary: 59 74 53; /* #3B4A35 Secondary Surface */
+  --bg-body: 42 42 40; /* #2A2A28 Deep Background */
+  --bg-card: 59 74 53; /* #3B4A35 Secondary Surface */
+  --text-main: 244 240 232; /* #F4F0E8 Light Typography */
+  --text-muted: 197 195 190;
+  --border-color: 78 95 70;
 }
 
 @layer base {
@@ -45,7 +45,7 @@
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(var(--text-primary) / 0.5);
+  background: rgb(var(--color-primary) / 0.7);
 }
 
 /* Fonts */
@@ -56,6 +56,11 @@
 h1, h2, h3, h4, h5, h6, .font-serif, .font-ancient {
   font-family: 'Amarante', 'Cinzel Decorative', 'Cinzel', serif !important;
   letter-spacing: 0.05em;
+}
+
+.font-algerian {
+  font-family: 'Algerian', 'Cinzel Decorative', 'Cinzel', Georgia, serif !important;
+  letter-spacing: 0.08em;
 }
 
 /* Glassmorphism Utilities */

@@ -27,10 +27,11 @@ function RegisterMember() {
   const [email, setEmail] = useState("");
   const [city, setCity] = useState("");
   const [networth, setNetworth] = useState("");
-  const [lodgeNumber, setLodgeNumber] = useState("");
+  const [membershipId, setMembershipId] = useState("");
+  const [officialJoinDate, setOfficialJoinDate] = useState("");
   const [lodgeLocation, setLodgeLocation] = useState("");
   const [grandmaster, setGrandmaster] = useState("");
-  const [status, setStatus] = useState("Pending");
+  const [status, setStatus] = useState("Application Received");
 
   // File uploads
   const [photoFile, setPhotoFile] = useState(null);
@@ -81,10 +82,13 @@ function RegisterMember() {
       setEmail(m.email || "");
       setCity(m.city || "");
       setNetworth(m.networth || "");
-      setLodgeNumber(m.lodgeNumber || "");
+      setMembershipId(m.membershipId || m.lodgeNumber || "");
+      setOfficialJoinDate(
+        m.officialJoinDate ? new Date(m.officialJoinDate).toISOString().split("T")[0] : ""
+      );
       setLodgeLocation(m.lodgeLocation?._id || m.lodgeLocation || "");
       setGrandmaster(m.grandmaster?._id || m.grandmaster || "");
-      setStatus(m.status || "Pending");
+      setStatus(m.status || "Application Received");
     }
   }, [isEditing, memberData]);
 
@@ -147,7 +151,9 @@ function RegisterMember() {
     formData.append("email", email);
     formData.append("city", city);
     formData.append("networth", networth);
-    formData.append("lodgeNumber", lodgeNumber);
+    formData.append("membershipId", membershipId);
+    formData.append("lodgeNumber", membershipId); // Backward compatibility
+    formData.append("officialJoinDate", officialJoinDate);
     formData.append("lodgeLocation", lodgeLocation);
     formData.append("grandmaster", grandmaster);
     formData.append("status", status);
@@ -177,7 +183,28 @@ function RegisterMember() {
     "$100,001 - $250,000",
     "$250,001 - $500,000",
     "$500,001 - $1,000,000",
-    "Over $1,000,000"
+    "Over $1,000,000",
+    "Prefer Not to Disclose",
+    "Net Worth Unknown",
+  ];
+
+  const membershipStatuses = [
+    "Application Received",
+    "Application Under Review",
+    "Awaiting Documentation",
+    "Awaiting Payment",
+    "Waiting for Next Phase",
+    "Waiting for Initiation",
+    "Initiation Scheduled",
+    "Waiting for Funding",
+    "Funding Completed",
+    "Initiated",
+    "Active Member",
+    "Waiting for New Grand Master",
+    "Temporarily Inactive",
+    "Suspended",
+    "Resigned",
+    "Membership Completed",
   ];
 
   if (isEditing && isLoadingMember) {
@@ -375,7 +402,7 @@ function RegisterMember() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <div>
               <Select
                 label={
@@ -400,13 +427,24 @@ function RegisterMember() {
             </div>
             <div>
               <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                Lodge Number (Unique Lookup Link ID)
+                Membership ID (Unique Lookup Link ID)
               </label>
               <input
                 type="text"
-                value={lodgeNumber}
-                onChange={(e) => setLodgeNumber(e.target.value)}
-                placeholder="e.g. 104"
+                value={membershipId}
+                onChange={(e) => setMembershipId(e.target.value)}
+                placeholder="e.g. AGL52364552"
+                className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-xl outline-none focus:border-primary dark:bg-gray-900 dark:text-white text-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                Official Join Date
+              </label>
+              <input
+                type="date"
+                value={officialJoinDate}
+                onChange={(e) => setOfficialJoinDate(e.target.value)}
                 className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-xl outline-none focus:border-primary dark:bg-gray-900 dark:text-white text-sm"
               />
             </div>
@@ -456,11 +494,11 @@ function RegisterMember() {
                 onChange={(e) => setStatus(e.target.value)}
                 className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-xl outline-none focus:border-primary dark:bg-gray-900 dark:text-white text-sm font-semibold"
               >
-                <option value="Pending">Pending</option>
-                <option value="Pending Payment">Pending Payment</option>
-                <option value="Active">Active</option>
-                <option value="Rejected">Rejected</option>
-                <option value="Inactive">Inactive</option>
+                {membershipStatuses.map((st) => (
+                  <option key={st} value={st}>
+                    {st}
+                  </option>
+                ))}
               </select>
             </div>
           </div>

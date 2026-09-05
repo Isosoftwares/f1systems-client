@@ -2,10 +2,21 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios, { BASE_API_URL } from "./api/axios";
 import { Loader } from "@mantine/core";
-import { FaFilePdf, FaFileImage, FaGlobe, FaCertificate, FaUserTie, FaMapMarkerAlt, FaCheckCircle } from "react-icons/fa";
+import {
+  FaFilePdf,
+  FaGlobe,
+  FaMapMarkerAlt,
+  FaCheckCircle,
+  FaCalendarAlt,
+  FaUserTie,
+} from "react-icons/fa";
+import MasonicEmblem from "./components/MasonicEmblem";
+import masonicWatermark from "./assets/masonicWatermark.svg";
 
 function MemberPortal() {
-  const { lodgeNumber } = useParams();
+  const { membershipId, lodgeNumber } = useParams();
+  const lookupId = membershipId || lodgeNumber;
+
   const [loading, setLoading] = useState(true);
   const [member, setMember] = useState(null);
   const [error, setError] = useState("");
@@ -14,9 +25,7 @@ function MemberPortal() {
     const fetchMemberDetails = async () => {
       try {
         setLoading(true);
-        // Call the public API route to lookup by lodge number.
-        // It detects the host header automatically or falls back.
-        const res = await axios.get(`/members/public/member/${lodgeNumber}`);
+        const res = await axios.get(`/members/public/member/${lookupId}`);
         setMember(res.data.member);
       } catch (err) {
         console.error(err);
@@ -26,17 +35,17 @@ function MemberPortal() {
       }
     };
 
-    if (lodgeNumber) {
+    if (lookupId) {
       fetchMemberDetails();
     }
-  }, [lodgeNumber]);
+  }, [lookupId]);
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-55 dark:bg-gray-950 flex flex-col items-center justify-center p-6 text-gray-800 dark:text-gray-200">
-        <Loader size="lg" color="amber" />
-        <p className="mt-4 text-sm font-semibold tracking-wider animate-pulse">
-          VERIFYING LEDGER CREDENTIALS...
+      <div className="min-h-screen bg-[#2A2A28] flex flex-col items-center justify-center p-6 text-[#F4F0E8]">
+        <Loader size="lg" color="yellow" />
+        <p className="mt-4 text-xs font-bold tracking-widest text-[#B9975B] uppercase animate-pulse">
+          VERIFYING BROTHERHOOD CREDENTIALS...
         </p>
       </div>
     );
@@ -44,88 +53,148 @@ function MemberPortal() {
 
   if (error || !member) {
     return (
-      <div className="min-h-screen bg-gray-55 dark:bg-gray-950 flex items-center justify-center p-6">
-        <div className="max-w-md w-full bg-white dark:bg-gray-900 border border-red-200/40 dark:border-red-950/40 rounded-2xl p-8 text-center shadow-lg">
-          <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 text-red-650 dark:text-red-400 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-200/20">
-            <FaCertificate className="w-8 h-8" />
+      <div className="min-h-screen bg-[#2A2A28] flex items-center justify-center p-6 text-[#F4F0E8]">
+        <div className="max-w-md w-full bg-[#1c221a] border border-[#B9975B]/30 rounded-3xl p-8 text-center shadow-2xl">
+          <div className="flex justify-center mb-4">
+            <MasonicEmblem className="w-16 h-16" color="#B9975B" />
           </div>
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Ledger Record Not Found</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
-            The requested lodge reference number is invalid or could not be verified in the Ledger.
+          <h2 className="text-xl font-bold uppercase tracking-wider text-[#F4F0E8] font-serif mb-2">
+            Ledger Record Not Found
+          </h2>
+          <p className="text-xs text-[#F4F0E8]/70 mb-6 leading-relaxed">
+            The requested membership identifier is invalid or could not be verified in the Official Registry Ledger.
           </p>
         </div>
       </div>
     );
   }
 
+  const memberIdDisplay = member.membershipId || member.lodgeNumber;
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-955 flex flex-col items-center justify-center p-4 sm:p-6 text-gray-800 dark:text-gray-200 font-sans">
-      <div className="max-w-5xl w-full bg-white dark:bg-gray-900 border border-amber-250/20 dark:border-amber-900/10 rounded-3xl shadow-xl overflow-hidden">
-        {/* Certificate / Verification Header */}
-        <div className="bg-amber-900 p-8 text-center relative border-b border-amber-855/20 text-white">
-          <div className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1 rounded-full bg-white text-green-300 text-xs font-bold border border-white">
-            <FaCheckCircle /> verified
+    <div className="min-h-screen bg-[#2A2A28] flex flex-col items-center justify-center p-3 sm:p-6 text-[#2A2A28] font-sans relative overflow-hidden">
+      {/* Background Watermark Decoration */}
+      <div
+        className="absolute -left-36 -top-24 w-[750px] h-[750px] opacity-[0.08] bg-no-repeat bg-contain pointer-events-none"
+        style={{ backgroundImage: `url(${masonicWatermark})` }}
+      />
+      <div
+        className="absolute -right-36 -bottom-24 w-[650px] h-[650px] opacity-[0.06] bg-no-repeat bg-contain pointer-events-none"
+        style={{ backgroundImage: `url(${masonicWatermark})` }}
+      />
+
+      <div className="max-w-4xl w-full bg-[#FAF7F2] rounded-3xl shadow-2xl border border-[#B9975B]/40 overflow-hidden relative z-10 my-4">
+        
+        {/* 11. Public URL Certificate Header (Dark Masonic Banner) */}
+        <div className="bg-[#1c221a] p-6 sm:p-8 text-center relative border-b border-[#B9975B]/40 text-[#F4F0E8]">
+          {/* Verified Badge */}
+          <div className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#3B4A35] text-[#B9975B] text-xs font-bold border border-[#B9975B]/40 shadow-sm">
+            <FaCheckCircle className="text-emerald-400" />
+            <span className="tracking-wide">verified</span>
           </div>
-          
-          <FaCertificate className="w-14 h-14 text-amber-300 mx-auto mb-3 drop-shadow" />
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-wide uppercase font-serif">
-           Freemason Ledger
+
+          <div className="flex justify-center mb-2">
+            <MasonicEmblem className="w-14 h-14 sm:w-16 sm:h-16 drop-shadow-md" color="#B9975B" />
+          </div>
+
+          {/* 11. Replace FREEMASON LEDGER with OFFICIAL MEMBERSHIP CERTIFICATE (in Algerian font) */}
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-[0.14em] uppercase font-algerian text-[#F4F0E8] mt-1">
+            OFFICIAL MEMBERSHIP CERTIFICATE
           </h1>
-          <p className="text-xs sm:text-sm text-amber-200/80 mt-1 uppercase tracking-widest font-semibold">
-            {member.site?.name || "Official Member Registry"}
-          </p>
+          <div className="w-24 h-[1.5px] bg-[#B9975B] mx-auto mt-2 opacity-80" />
         </div>
 
         {/* Member Profile Block */}
-        <div className="p-6 sm:p-8 space-y-8">
-          <div className="flex flex-col sm:flex-row gap-6 items-center sm:items-start text-center sm:text-left pb-6 border-b border-gray-100 dark:border-gray-800">
-            <div className="space-y-2 flex-1">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                {member.firstName} {member.lastName}
-              </h2>
-              <div className="flex flex-wrap justify-center sm:justify-start gap-2">
-                <span className="px-3 py-1 rounded-full font-bold bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 border border-green-200/30">
-                  {member.status} Member
-                </span>
-                <span className="px-3 py-1 rounded-full font-bold bg-amber-100 dark:bg-amber-955/20 text-amber-800 dark:text-amber-400 border border-amber-200/30">
-                  Lodge Number: {member.lodgeNumber}
-                </span>
-              </div>
+        <div className="p-6 sm:p-10 space-y-7">
+          
+          {/* 12. Member Name, Status, Membership ID, Lodge & Origin Layout (Left-Aligned) */}
+          <div className="text-left pb-6 border-b border-[#B9975B]/20 space-y-2.5">
+            {/* Full Name */}
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#2A2A28] font-serif tracking-tight">
+              {member.firstName} {member.lastName}
+            </h2>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm pt-2 text-gray-600 dark:text-gray-400">
-                <p className="flex items-center justify-center sm:justify-start gap-2">
-                  <FaMapMarkerAlt className="text-amber-600 shrink-0" />
-                  <span>Lodge: <strong className="text-gray-800 dark:text-gray-200">{member.lodgeLocation?.lodgeName || "N/A"}</strong></span>
-                </p>
-                <p className="flex items-center justify-center sm:justify-start gap-2">
-                  <FaGlobe className="text-amber-600 shrink-0" />
-                  <span>Origin: <strong className="text-gray-800 dark:text-gray-200">{member.countryOfOrigin || "N/A"}</strong></span>
-                </p>
-              </div>
+            {/* Badges: Status & Membership ID */}
+            <div className="flex flex-wrap items-center gap-2 pt-0.5">
+              <span className="px-3.5 py-1 rounded-md text-xs font-bold tracking-wide bg-[#3B4A35] text-[#F4F0E8] border border-[#3B4A35]">
+                {member.status || "Member"}
+              </span>
+
+              {/* 7. Membership ID (Unique Lookup Link ID) */}
+              <span className="px-3.5 py-1 rounded-md text-xs font-bold tracking-wide bg-[#B9975B]/20 text-[#735823] border border-[#B9975B]/50 font-mono">
+                Membership ID: {memberIdDisplay}
+              </span>
+            </div>
+
+            {/* 12. Move Origin so it appears immediately after Lodge, both left aligned */}
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs sm:text-sm text-[#44423e] pt-2">
+              <span className="flex items-center gap-1.5 font-medium">
+                <FaMapMarkerAlt className="text-[#B9975B] shrink-0 text-sm" />
+                <span>
+                  Lodge: <strong className="text-[#2A2A28] font-semibold">{member.lodgeLocation?.lodgeName || "N/A"}</strong>
+                </span>
+              </span>
+
+              <span className="text-[#B9975B]/60 font-bold">•</span>
+
+              <span className="flex items-center gap-1.5 font-medium">
+                <FaGlobe className="text-[#B9975B] shrink-0 text-sm" />
+                <span>
+                  Origin: <strong className="text-[#2A2A28] font-semibold">{member.countryOfOrigin || "N/A"}</strong>
+                </span>
+              </span>
+
+              {/* 6. Display Official Join Date on Member Public URL */}
+              {member.officialJoinDate && (
+                <>
+                  <span className="text-[#B9975B]/60 font-bold">•</span>
+                  <span className="flex items-center gap-1.5 font-medium">
+                    <FaCalendarAlt className="text-[#B9975B] shrink-0 text-xs" />
+                    <span>
+                      Official Join Date:{" "}
+                      <strong className="text-[#2A2A28] font-semibold">
+                        {new Date(member.officialJoinDate).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                      </strong>
+                    </span>
+                  </span>
+                </>
+              )}
             </div>
           </div>
 
-
-
-          {/* Mentor / Grandmaster Details */}
+          {/* Grandmaster / Mentor Details Box (matching reference image: deep green #3B4A35) */}
           {member.grandmaster && (
-            <div className="bg-gray-50 dark:bg-gray-850 border border-gray-150 dark:border-gray-800 rounded-2xl p-5 space-y-3">
-              <h3 className="text-sm font-bold text-amber-800 dark:text-amber-400 flex items-center gap-2 uppercase tracking-wide">
-                <FaUserTie /> Grandmaster / Mentor Info
-              </h3>
-              <div className="flex gap-4 items-start">
-                {member.grandmaster.picture && (
+            <div className="bg-[#3B4A35] text-[#F4F0E8] border border-[#B9975B]/30 rounded-2xl p-5 shadow-sm space-y-2.5">
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#B9975B]">
+                <FaUserTie />
+                <span>GRANDMASTER / MENTOR INFO</span>
+              </div>
+
+              <div className="flex gap-4 items-center">
+                {member.grandmaster.picture ? (
                   <img
                     src={`${BASE_API_URL}/${member.grandmaster.picture}`}
                     alt={member.grandmaster.name}
-                    className="w-12 h-12 rounded-full object-cover border border-gray-200 dark:border-gray-700"
+                    className="w-14 h-14 rounded-full object-cover border-2 border-[#B9975B]/60 shadow-md shrink-0"
                   />
+                ) : (
+                  <div className="w-14 h-14 rounded-full bg-[#1c221a] text-[#B9975B] border border-[#B9975B]/40 flex items-center justify-center font-bold text-sm shrink-0">
+                    GM
+                  </div>
                 )}
                 <div>
-                  <h4 className="font-bold text-gray-950 dark:text-white text-sm">{member.grandmaster.name}</h4>
-                  <p className="text-xs text-gray-500 dark:text-gray-450 mt-0.5">Lodge No: {member.grandmaster.lodgeNo}</p>
+                  <h4 className="font-bold text-[#F4F0E8] text-base font-serif">
+                    {member.grandmaster.name}
+                  </h4>
+                  <p className="text-xs text-[#F4F0E8]/70 mt-0.5">
+                    Lodge No: {member.grandmaster.lodgeNo}
+                  </p>
                   {member.grandmaster.history && (
-                    <p className="text-xs text-gray-650 dark:text-gray-300 mt-2 leading-relaxed italic">
+                    <p className="text-xs text-[#F4F0E8]/80 mt-1 italic leading-relaxed">
                       "{member.grandmaster.history}"
                     </p>
                   )}
@@ -134,27 +203,33 @@ function MemberPortal() {
             </div>
           )}
 
-          {/* Credentials Display */}
-          <div className="pt-6 border-t border-gray-100 dark:border-gray-800 space-y-4">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 text-center">Official Certificates</h3>
-            
-            {/* If no certs are present, show a clear indicator */}
+          {/* 10. Credentials Display: Clean single heading with NO duplicate titles */}
+          <div className="pt-4 space-y-4">
+            <div className="text-center">
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#B9975B]">
+                OFFICIAL CERTIFICATES
+              </span>
+              <div className="w-16 h-[1px] bg-[#B9975B]/40 mx-auto mt-1" />
+            </div>
+
+            {/* If no certs uploaded */}
             {!member.certPNG && !member.certPDF && (
-              <div className="p-4 bg-amber-50 dark:bg-amber-955/20 border border-dashed border-amber-200/50 rounded-xl text-amber-800 dark:text-amber-400 text-xs font-semibold text-center">
-                ⚠️ No certificates uploaded yet.
+              <div className="p-6 bg-[#FAF7F2] border border-dashed border-[#B9975B]/40 rounded-2xl text-center text-[#735823] text-xs font-semibold">
+                Official certificates for this member record are pending registry archive.
               </div>
             )}
 
             <div className="space-y-6 max-w-2xl mx-auto">
-              {/* Display PNG Certificate Image */}
+              {/* Certificate PNG Image (No duplicate heading) */}
               {member.certPNG && (
-                <div className="flex flex-col items-center gap-2">
-                  <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Official Certificate</span>
-                  <img
-                    src={`${BASE_API_URL}/${member.certPNG}`}
-                    alt="Certificate"
-                    className="w-full max-h-[600px] object-contain rounded-xl border border-gray-200 dark:border-gray-800 shadow-md"
-                  />
+                <div className="flex flex-col items-center">
+                  <div className="p-2 bg-white rounded-2xl border border-[#B9975B]/40 shadow-lg w-full">
+                    <img
+                      src={`${BASE_API_URL}/${member.certPNG}`}
+                      alt="Official Freemason Certificate"
+                      className="w-full max-h-[650px] object-contain rounded-xl"
+                    />
+                  </div>
                 </div>
               )}
 
@@ -165,15 +240,22 @@ function MemberPortal() {
                     href={`${BASE_API_URL}/${member.certPDF}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2.5 px-6 py-3 bg-red-50 hover:bg-red-100 text-red-905 border border-red-200/50 rounded-xl font-bold transition-all shadow-sm text-sm w-full sm:w-auto"
+                    className="flex items-center justify-center gap-2.5 px-6 py-3 bg-[#B9975B] hover:bg-[#c9a769] text-[#1c221a] rounded-xl font-bold transition-all shadow-md text-xs sm:text-sm uppercase tracking-wider active:scale-[0.99]"
                   >
-                    <FaFilePdf /> Download PDF Certificate
+                    <FaFilePdf size={16} /> Download PDF Certificate
                   </a>
                 </div>
               )}
             </div>
           </div>
+
         </div>
+
+        {/* Footer info */}
+        <div className="bg-[#1c221a] py-3.5 px-6 text-center border-t border-[#B9975B]/30 text-[11px] text-[#F4F0E8]/60 uppercase tracking-widest">
+          Secured & Verified by Freemason Ledger System
+        </div>
+
       </div>
     </div>
   );

@@ -61,7 +61,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             
             {/* Public Member Portal (No Authentication Required) */}
-            <Route path="/registry/:lodgeNumber" element={<MemberPortal />} />
+            <Route path="/registry/:membershipId" element={<MemberPortal />} />
             
             <Route path="/*" element={<F404Page />} />
             <Route path="/unauthorized" element={<Unauthorized />} />

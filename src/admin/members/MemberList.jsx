@@ -4,6 +4,7 @@ import { Loader, Modal, Button, Group, Text } from "@mantine/core";
 import { toast } from "react-toastify";
 import {
   FaPlus,
+  FaUserPlus,
   FaTrash,
   FaEdit,
   FaUsers,
@@ -75,14 +76,45 @@ function MemberList() {
     }
   };
 
-  const handleCopyLink = (lodgeNum) => {
-    if (!lodgeNum) {
-      toast.error("Lodge number is missing for this member");
+  const handleCopyLink = (lookupId) => {
+    if (!lookupId) {
+      toast.error("Membership ID is missing for this member");
       return;
     }
-    const publicLink = `${window.location.origin}/registry/${lodgeNum}`;
+    const publicLink = `${window.location.origin}/registry/${lookupId}`;
     navigator.clipboard.writeText(publicLink);
     toast.success("Public verification link copied to clipboard!");
+  };
+
+  const getStatusBadgeClass = (status) => {
+    switch (status) {
+      case "Active Member":
+      case "Active":
+      case "Membership Completed":
+      case "Funding Completed":
+        return "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 border-emerald-300/40";
+      case "Initiated":
+      case "Initiation Scheduled":
+        return "bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 border-amber-300/40";
+      case "Application Received":
+      case "Application Under Review":
+      case "Waiting for Next Phase":
+      case "Waiting for Initiation":
+      case "Waiting for Funding":
+      case "Waiting for New Grand Master":
+      case "Pending":
+      case "Pending Payment":
+      case "Awaiting Documentation":
+      case "Awaiting Payment":
+        return "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 border-blue-300/40";
+      case "Temporarily Inactive":
+      case "Inactive":
+      case "Suspended":
+      case "Resigned":
+      case "Rejected":
+      default:
+        return "bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border-stone-300/40";
+    }
   };
 
   const members = membersData?.members || [];
@@ -103,9 +135,9 @@ function MemberList() {
         </div>
         <Link
           to="/dashboard/members/create"
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-white font-semibold rounded-lg shadow-md hover:bg-primary/90 transition-all active:scale-95 text-sm shrink-0"
+          className="flex items-center gap-2 bg-primary hover:bg-[#c9a769] text-[#1c221a] px-4 py-2.5 rounded-xl font-bold text-sm shadow-md transition-all active:scale-[0.98]"
         >
-          <FaPlus /> Register Member
+          <FaUserPlus /> Register New Member
         </Link>
       </div>
 
@@ -119,7 +151,7 @@ function MemberList() {
             setSearchTerm(e.target.value);
             setPage(1);
           }}
-          placeholder="Search members by name, email, or lodge number..."
+          placeholder="Search members by name, email, or membership ID..."
           className="w-full bg-transparent outline-none text-sm text-gray-700 dark:text-white placeholder:text-gray-500"
         />
       </div>
@@ -138,7 +170,7 @@ function MemberList() {
                   <th className="px-6 py-4">Photo</th>
                   <th className="px-6 py-4">Full Name</th>
                   <th className="px-6 py-4">Lodge Name & No</th>
-                  <th className="px-6 py-4">Lookup Code</th>
+                  <th className="px-6 py-4">Membership ID</th>
                   <th className="px-6 py-4">Status</th>
                   <th className="px-6 py-4">Public Link</th>
                   <th className="px-6 py-4 text-right">Actions</th>
@@ -179,28 +211,22 @@ function MemberList() {
                           {member.lodgeLocation?.location || "-"}
                         </div>
                       </td>
-                      <td className="px-6 py-4 font-semibold text-xs text-primary">
-                        #{member.lodgeNumber || "N/A"}
+                      <td className="px-6 py-4 font-semibold text-xs text-primary font-mono">
+                        #{member.membershipId || member.lodgeNumber || "N/A"}
                       </td>
                       <td className="px-6 py-4">
                         <span
-                          className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
-                            member.status === "Active"
-                              ? "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 border-green-200/30"
-                              : member.status === "Pending Payment"
-                              ? "bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-400 border-amber-200/30"
-                              : member.status === "Pending"
-                              ? "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 border-blue-200/30"
-                              : "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400 border-red-200/30"
-                          }`}
+                          className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${getStatusBadgeClass(
+                            member.status
+                          )}`}
                         >
                           {member.status}
                         </span>
                       </td>
                       <td className="px-6 py-4">
                         <button
-                          onClick={() => handleCopyLink(member.lodgeNumber)}
-                          className="flex items-center gap-1 text-xs text-amber-700 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded-lg border border-amber-200/30 hover:underline font-semibold"
+                          onClick={() => handleCopyLink(member.membershipId || member.lodgeNumber)}
+                          className="flex items-center gap-1 text-xs text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 px-2.5 py-1 rounded-lg border border-amber-200/30 hover:underline font-semibold transition-colors"
                         >
                           <FaLink /> Copy URL
                         </button>

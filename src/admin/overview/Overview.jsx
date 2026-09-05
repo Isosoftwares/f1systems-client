@@ -141,7 +141,7 @@ function Overview() {
                 <th className="px-6 py-4">Name</th>
                 <th className="px-6 py-4">Email</th>
                 <th className="px-6 py-4">Lodge Name</th>
-                <th className="px-6 py-4">Lodge Number</th>
+                <th className="px-6 py-4">Membership ID</th>
                 <th className="px-6 py-4">Status</th>
               </tr>
             </thead>
@@ -170,8 +170,8 @@ function Overview() {
                     <td className="px-6 py-4">
                       {member.lodgeLocation?.lodgeName || "-"}
                     </td>
-                    <td className="px-6 py-4 font-semibold text-xs">
-                      #{member.lodgeNumber || "-"}
+                    <td className="px-6 py-4 font-semibold text-xs text-primary font-mono">
+                      #{member.membershipId || member.lodgeNumber || "-"}
                     </td>
                     <td className="px-6 py-4">
                       <span

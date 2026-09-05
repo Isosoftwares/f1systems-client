@@ -7,15 +7,21 @@ module.exports = withMT({
   theme: {
     extend: {
       colors: {
-        primary: "#E63946", // Red requested
-        secondary: "#FFD700", // Golden requested
-        dark: "#0e111d", // Deep Navy Background
-        "dark-lighter": "#1b2034", // Card Backgrounds
-        light: "#ffffff",
-        "gray-text": "#94a3b8", // Muted text for dark mode
-        // Legacy mappings
-        gold: "#FFD700",
-        tertiary: "#1b2034", // Mapping old green to new dark-lighter for now
+        primary: "#B9975B", // Premium accent & primary CTA elements
+        secondary: "#3B4A35", // Secondary surfaces
+        dark: "#2A2A28", // Deep backgrounds
+        "dark-lighter": "#3B4A35", // Card & secondary surfaces
+        light: "#F4F0E8", // Light surfaces & typography
+        "masonic-bg": "#2A2A28",
+        "masonic-surface": "#3B4A35",
+        "masonic-gold": "#B9975B",
+        "masonic-light": "#F4F0E8",
+        "gray-text": "#c5c3be", // Crisp readable text
+        gold: "#B9975B",
+        tertiary: "#3B4A35",
+      },
+      fontFamily: {
+        algerian: ["Algerian", "Cinzel Decorative", "Cinzel", "Georgia", "serif"],
       },
       backgroundImage: {
         hero: "url('/src/assets/graphics/solid4.jpg')",

@@ -13,12 +13,12 @@ function ViewMember() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const handleCopyLink = (lodgeNum) => {
-    if (!lodgeNum) {
-      toast.error("Lodge number is missing for this member");
+  const handleCopyLink = (lookupId) => {
+    if (!lookupId) {
+      toast.error("Membership ID is missing for this member");
       return;
     }
-    const publicLink = `${window.location.origin}/registry/${lodgeNum}`;
+    const publicLink = `${window.location.origin}/registry/${lookupId}`;
     navigator.clipboard.writeText(publicLink);
     toast.success("Public verification link copied to clipboard!");
   };
@@ -106,8 +106,8 @@ function ViewMember() {
         </div>
         <div className="flex gap-3">
           <button
-            onClick={() => handleCopyLink(member.lodgeNumber)}
-            className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-amber-700 border border-amber-200/50 rounded-xl text-sm font-bold shadow-sm transition"
+            onClick={() => handleCopyLink(member.membershipId || member.lodgeNumber)}
+            className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-amber-700 dark:text-amber-400 border border-amber-200/50 rounded-xl text-sm font-bold shadow-sm transition"
           >
             <FaLink /> Copy Portal Link
           </button>
@@ -123,17 +123,17 @@ function ViewMember() {
       {/* Main Profile Info Panel */}
       <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl shadow-md overflow-hidden">
         {/* Card Header Banner */}
-        <div className="bg-amber-900 p-6 flex flex-col sm:flex-row gap-6 items-center text-center sm:text-left text-white border-b border-amber-900/40">
+        <div className="bg-[#3B4A35] p-6 flex flex-col sm:flex-row gap-6 items-center text-center sm:text-left text-white border-b border-[#B9975B]/30">
           <div className="space-y-1">
             <h3 className="text-2xl font-bold tracking-wide uppercase font-serif">
               {member.firstName} {member.lastName}
             </h3>
-            <p className="text-xs text-amber-200 font-semibold tracking-widest uppercase">
-              Lodge Reference Number: #{member.lodgeNumber}
+            <p className="text-xs text-[#B9975B] font-semibold tracking-widest uppercase font-mono">
+              Membership ID: #{member.membershipId || member.lodgeNumber}
             </p>
             <div className="flex flex-wrap gap-2 justify-center sm:justify-start mt-2">
-              <span className="px-3 py-1 rounded-full text-xs font-bold bg-green-500/20 text-green-300 border border-green-500/30">
-                {member.status} Member
+              <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#B9975B]/20 text-[#F4F0E8] border border-[#B9975B]/40">
+                {member.status}
               </span>
             </div>
           </div>
@@ -162,6 +162,14 @@ function ViewMember() {
                 <p className="font-semibold text-gray-500">Phone Number</p>
                 <p className="text-gray-900 dark:text-white mt-0.5">{member.phoneNumber || "-"}</p>
               </div>
+              <div>
+                <p className="font-semibold text-gray-500">Occupation</p>
+                <p className="text-gray-900 dark:text-white mt-0.5">{member.occupation || "-"}</p>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-500">Marital Status</p>
+                <p className="text-gray-900 dark:text-white mt-0.5">{member.maritalStatus || "-"}</p>
+              </div>
             </div>
           </div>
 
@@ -169,20 +177,34 @@ function ViewMember() {
             <h4 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4 border-b border-gray-100 dark:border-gray-800 pb-2">
               Background & Status
             </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-sm">
               <div>
-                <p className="font-semibold text-gray-500">Net Worth Range</p>
-                <p className="text-gray-900 dark:text-white mt-0.5 font-semibold text-amber-700 dark:text-amber-400">
+                <p className="font-semibold text-gray-500">Net Worth</p>
+                <p className="text-gray-900 dark:text-white mt-0.5 font-semibold text-[#B9975B]">
                   {member.networth || "-"}
+                </p>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-500">Official Join Date</p>
+                <p className="text-gray-900 dark:text-white mt-0.5 font-semibold">
+                  {member.officialJoinDate
+                    ? new Date(member.officialJoinDate).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })
+                    : "Not Recorded"}
                 </p>
               </div>
               <div>
                 <p className="font-semibold text-gray-500">Country of Origin</p>
                 <p className="text-gray-900 dark:text-white mt-0.5">{member.countryOfOrigin || "-"}</p>
               </div>
-              <div className="sm:col-span-2">
-                <p className="font-semibold text-gray-500">Current Address</p>
-                <p className="text-gray-900 dark:text-white mt-0.5">{member.currentAddress || "-"}</p>
+              <div>
+                <p className="font-semibold text-gray-500">City & Address</p>
+                <p className="text-gray-900 dark:text-white mt-0.5">
+                  {member.city ? `${member.city}, ` : ""}{member.currentAddress || "-"}
+                </p>
               </div>
             </div>
           </div>
